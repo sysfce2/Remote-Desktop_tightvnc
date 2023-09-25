@@ -71,6 +71,7 @@ public:
 
   static const int LAST_RECT = -224;
   static const int DESKTOP_SIZE = -223;
+  static const int DESKTOP_CONFIGURATION = -222;
 
   static const int QUALITY_LEVEL_0 = -32;
   static const int QUALITY_LEVEL_1 = -31;
@@ -90,6 +91,7 @@ public:
   static const char *const SIG_LAST_RECT;
   static const char *const SIG_DESKTOP_SIZE;
   static const char *const SIG_QUALITY_LEVEL;
+  static const char* const SIG_DESKTOP_CONFIGURATION;
 };
 
 #endif // __RFB_ENCODING_DEFS_H_INCLUDED__

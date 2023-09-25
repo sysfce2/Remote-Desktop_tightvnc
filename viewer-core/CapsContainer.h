@@ -40,6 +40,12 @@ public:
   UINT32 code;                            // numeric identifier
   char vendorSignature[vendorSigSize];    // vendor identification
   char nameSignature[nameSigSize];        // abbreviated option name
+
+public:
+  //
+  // Returns true if capability vendor and signature are equal to args
+  //
+  bool isEqual(const char *vendor, const char *signature) const;
 };
 
 // This class is thread-safe.
@@ -105,6 +111,7 @@ public:
   // This method return list of enabled capabilities.
   //
   void getEnabledCapabilities(std::vector<UINT32> &codes) const;
+
 
 private:
   //

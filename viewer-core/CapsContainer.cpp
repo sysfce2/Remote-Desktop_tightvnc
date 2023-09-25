@@ -87,11 +87,8 @@ bool CapsContainer::enable(const RfbCapabilityInfo *capinfo)
     return false;
   }
 
-  const RfbCapabilityInfo *known = &(infoMap[capinfo->code]);
-  if (memcmp(known->vendorSignature, capinfo->vendorSignature,
-             RfbCapabilityInfo::vendorSigSize) != 0 ||
-      memcmp(known->nameSignature, capinfo->nameSignature,
-             RfbCapabilityInfo::nameSigSize) != 0 ) {
+  const RfbCapabilityInfo known = infoMap[capinfo->code];
+  if (!known.isEqual(capinfo->vendorSignature, capinfo->nameSignature)){
     enableMap[capinfo->code] = false;
     return false;
   }
@@ -128,4 +125,13 @@ void CapsContainer::getEnabledCapabilities(std::vector<UINT32> &codes) const
 bool CapsContainer::isKnown(UINT32 code) const
 {
   return (descMap.find(code) != descMap.end());
+}
+
+bool RfbCapabilityInfo::isEqual(const char *vendor, const char *signature) const
+{
+  if (memcmp(vendorSignature, vendor, vendorSigSize) != 0 ||
+      memcmp(nameSignature, signature, nameSigSize) != 0 ) {
+    return false;
+  }
+  return true;
 }

@@ -380,7 +380,7 @@ void RemoteViewerCore::sendFbUpdateRequest(bool incremental)
 	} else {
 	  m_logWriter.debug(_T("Sending frame buffer full update request [%dx%d]..."),
 	                    updateRect.getWidth(), updateRect.getHeight());
-	}
+  }
 
 	RfbFramebufferUpdateRequestClientMessage fbUpdReq(isIncremental, updateRect);
 	fbUpdReq.send(m_output);
@@ -772,6 +772,10 @@ void RemoteViewerCore::initTunnelling()
     for (UINT32 i = 0; i < tunnelCount; i++) {
       RfbCapabilityInfo cap = readCapability();
       if (cap.code == TunnelDefs::NOTUNNEL) {
+        hasNoTunnel = true;
+      }
+      // Special case for VNC server of Siemense PLC . It supports NOTUNNEL while there is no it in the list.
+	  if (cap.isEqual("SICR", "SCHANNEL")) {
         hasNoTunnel = true;
       }
     }
@@ -1505,4 +1509,14 @@ void RemoteViewerCore::sendEncodings()
 
   RfbSetEncodingsClientMessage encodingsMessage(&m_decoderStore.getDecoderIds());
   encodingsMessage.send(m_output);
+}
+
+std::vector<Rect> RemoteViewerCore::getDesktops()
+{
+  return m_desktops;
+}
+
+Dimension RemoteViewerCore::getDesktopSize()
+{
+  return m_desktopSize;
 }

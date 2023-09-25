@@ -155,7 +155,8 @@ bool Environment::getCurrentModuleFolderPath(StringStorage *out)
 
 bool Environment::getCurrentUserName(StringStorage *out, LogWriter *log)
 {
-  return WTS::getCurrentUserName(out, log);
+  *out = WTS::getCurrentUserName(log);
+  return !out->isEmpty();
 }
 
 bool Environment::getComputerName(StringStorage *out)
@@ -210,6 +211,12 @@ bool Environment::isVistaOrLater()
 {
   init();
   return m_osVerInfo.dwMajorVersion >= 6;
+}
+
+bool Environment::isWin7()
+{
+  init();
+  return ((m_osVerInfo.dwMajorVersion == 6) && (m_osVerInfo.dwMinorVersion == 1) && isWinNTFamily());
 }
 
 void Environment::simulateCtrlAltDel(LogWriter *log)
